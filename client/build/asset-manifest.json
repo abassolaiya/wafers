@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.946a6b50.css",
+    "main.js": "/static/js/main.e04e1c2d.js",
+    "static/media/labsci.jpg": "/static/media/labsci.ca89b95e64f403f779ab.jpg",
+    "static/media/mallen.jpg": "/static/media/mallen.3df8ac040c8b1688b910.jpg",
+    "static/media/aboutus.png": "/static/media/aboutus.0a5ee3f01526bfae3a0f.png",
+    "static/media/celia.jpg": "/static/media/celia.0c847614fe2f5b6bf572.jpg",
+    "static/media/Adewale.jpg": "/static/media/Adewale.3076b6548533115054c7.jpg",
+    "static/media/opeyemi.jpg": "/static/media/opeyemi.ee8b99ea3aa7bb0569e8.jpg",
+    "static/media/pd.jpg": "/static/media/pd.96c5b52f16cc39fe6758.jpg",
+    "static/media/R.jpg": "/static/media/R.e07cc20b8b4bcfaa9bae.jpg",
+    "static/media/Krysia.png": "/static/media/Krysia.9df5721c7e42e0cd8a0b.png",
+    "static/media/Joseph.jpg": "/static/media/Joseph.a77ee97590155ed5f46a.jpg",
+    "static/media/OIP.jpg": "/static/media/OIP.727d502515ea8883c064.jpg",
+    "static/media/OIP (1).jpg": "/static/media/OIP (1).6c2925f73579469ca89e.jpg",
+    "static/media/wafer 2.png": "/static/media/wafer 2.a4e687b3eda5c222cafb.png",
+    "index.html": "/index.html",
+    "main.946a6b50.css.map": "/static/css/main.946a6b50.css.map",
+    "main.e04e1c2d.js.map": "/static/js/main.e04e1c2d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.946a6b50.css",
+    "static/js/main.e04e1c2d.js"
+  ]
+}
