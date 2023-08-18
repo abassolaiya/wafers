@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import uploadToCloudinary from '../utils/cloudinary.js';
 import Publication from '../models/Publication.js';
 
 
@@ -16,6 +16,21 @@ export const getPublications = async (req, res) => {
       } catch (err) {
         res.status(500).json(err);
       }
+}
+
+export const getPublications4 = async (req, res) => {
+  const { page } = req.query;
+  try {
+      const LIMIT = 4;
+      const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+  
+      const total = await Publication.countDocuments({});
+      const publications = await Publication.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+
+      res.json({ data: publications, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)});
+    } catch (err) {
+      res.status(500).json(err);
+    }
 }
 
 export const getPublicationsBySearch = async (req, res) => {
@@ -46,32 +61,18 @@ export const getPublication = async (req, res) => {
 
 export const createPublication = async (req, res) => {
     // console.log(req.body)
-    const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-  };
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.path);
+      const avatar = result.secure_url;
+    }
 
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
     try {
         const result = await Publication.create({ 
             title: req.body.title,
             desc: req.body.desc,
-            img: req.body.img, 
-            userId: req.userId });
+            img: (avatar) ? avatar : '', 
+            userId: req.userId 
+          });
 
         res.status(201).json(result);
     } catch (error) {
@@ -81,11 +82,11 @@ export const createPublication = async (req, res) => {
 
 export const updatePublication = async (req, res) => {
     const { id } = req.params;
-    const { title, desc, img } = req.body;
+    const { title, desc } = req.body;
     
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No Publication with id: ${id}`);
 
-    const UpdatePublication = { title, desc, img, _id: id };
+    const UpdatePublication = { title, desc, _id: id };
 
     await Publication.findByIdAndUpdate(id, UpdatePublication, { new: true });
 

@@ -23,15 +23,6 @@ dotenv.config({ path: './config.env' });
 
 const DB = process.env.DATABASE;
 
-// mongoose.connect(DB, {
-//     'useNewUrlParser':  true,
-//     'useFindAndModify': false,
-//     'useCreateIndex': true,
-//     useUnifiedTopology: true 
-// }).then(con => {
-//     // console.log(con.connections)
-//     console.log('Db connections succesful')
-// })
 mongoose.connect(DB, {
     serverSelectionTimeoutMS: 5000
   }).catch(err => console.log(err.reason));

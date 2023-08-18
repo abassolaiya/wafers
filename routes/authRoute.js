@@ -1,6 +1,8 @@
 import express, { request } from "express";
 import bcrypt from "bcrypt";
 
+import upload from "../utils/multer.js";
+
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 const JWTSEC = "#2@!@$ndja45883 r7##";
@@ -8,7 +10,7 @@ import crypto from "crypto";
 
 import User from "../models/User.js";
 
-import { signin, signup } from "../controllers/usercontroller.js";
+import { signin, signup } from "../controllers/userController.js";
 
 const router = express.Router();
 

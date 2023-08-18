@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import uploadToCloudinary from '../utils/cloudinary.js';
 import Jigsaw from '../models/Jigsaw.js';
 
 
@@ -7,6 +7,21 @@ export const getJigsaws = async (req, res) => {
     const { page } = req.query;
     try {
         const LIMIT = 24;
+        const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
+    
+        const total = await Jigsaw.countDocuments({});
+        const jigsaws = await Jigsaw.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+
+        res.json({ data: jigsaws, currentPage: Number(page), numberOfPages: Math.ceil(total / LIMIT)});
+      } catch (err) {
+        res.status(500).json(err);
+      }
+}
+
+export const getJigsaws4 = async (req, res) => {
+    const { page } = req.query;
+    try {
+        const LIMIT = 4;
         const startIndex = (Number(page) - 1) * LIMIT; // get the starting index of every page
     
         const total = await Jigsaw.countDocuments({});
@@ -46,31 +61,17 @@ export const getJigsaw = async (req, res) => {
 
 export const createJigsaw = async (req, res) => {
     // console.log(req.body)
-    const uploadImage = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertBase64(file);
-    setBaseImage(base64);
-  };
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.path);
+      const avatar = result.secure_url;
+    }
 
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
+  
     try {
         const result = await Jigsaw.create({ 
             title: req.body.title,
             desc: req.body.desc,
-            img: req.body.img, 
+            img: (avatar) ? avatar : '', 
             userId: req.userId });
 
         res.status(201).json(result);
@@ -81,11 +82,11 @@ export const createJigsaw = async (req, res) => {
 
 export const updateJigsaw = async (req, res) => {
     const { id } = req.params;
-    const { title, desc, img } = req.body;
+    const { title, desc } = req.body;
     
     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No blog with id: ${id}`);
 
-    const UpdateJigsaw = { title, desc, img, _id: id };
+    const UpdateJigsaw = { title, desc, _id: id };
 
     await Jigsaw.findByIdAndUpdate(id, UpdateJigsaw, { new: true });
 

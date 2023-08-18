@@ -34,15 +34,25 @@ export const signup = async (req, res) => {
     const oldUser = await User.findOne({ email });
 
     if (oldUser) return res.status(400).json({ message: "User already exists" });
-
-    const hashedPassword = await bcrypt.hash(password, 12);
+    let password = req.body.password;
+    console.log(password)
+    const saltRounds = 10;
+    // const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = bcrypt.hash(password, saltRounds, function(err, hash) {
+      // Store hash in your password DB.
+    });
+    // if (req.file) {
+    //   const result = await uploadToCloudinary(req.file.path);
+    //   const avatar = result.secure_url;
+    // }
 
     const result = await User.create({ 
         email: req.body.email,
         phoneNumber: req.body.phoneNumber,
         password: hashedPassword,
         username: req.body.username, 
-        name: `${firstName} ${lastName}` });
+        name: `${firstName} ${lastName}`
+     });
 
     const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } );
 
