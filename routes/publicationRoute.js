@@ -16,7 +16,7 @@ import auth from "../middleware/auth.js"
 
 router.get('/search', getPublicationsBySearch);
 router.get('/', getPublications);
-router.get('/four/', getPublications4);
+router.get('/four', getPublications4);
 router.get('/:id', getPublication);
 
 router.post('/', upload.single('avatar'),  createPublication);
