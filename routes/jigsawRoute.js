@@ -16,7 +16,7 @@ import auth from "../middleware/auth.js"
 
 router.get('/search', getJigsawsBySearch);
 router.get('/', getJigsaws);
-router.get('/4', getJigsaws);
+router.get('/four', getJigsaws);
 router.get('/:id', getJigsaw);
 
 router.post('/', upload.single('avatar'),  createJigsaw);
