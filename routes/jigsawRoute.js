@@ -3,6 +3,7 @@ import {
     getJigsaws, 
     getJigsawsBySearch, 
     getJigsaw, 
+    getJigsaws4,
     createJigsaw, 
     updateJigsaw, 
     likeJigsaw, 
@@ -16,7 +17,7 @@ import auth from "../middleware/auth.js"
 
 router.get('/search', getJigsawsBySearch);
 router.get('/', getJigsaws);
-router.get('/four', getJigsaws);
+router.get('/four/', getJigsaws4);
 router.get('/:id', getJigsaw);
 
 router.post('/', upload.single('avatar'),  createJigsaw);
